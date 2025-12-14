@@ -4,22 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Кошелёк</title>
-
-  <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root{
       --bg:#0b0f17;
-      --card:#111827;
-      --card2:#0f172a;
       --stroke:rgba(255,255,255,.08);
       --text:#e5e7eb;
       --muted:rgba(229,231,235,.65);
       --danger:#ff5a5f;
       --good:#34d399;
-      --btn:#1f2937;
-      --btn2:#263244;
       --shadow: 0 14px 40px rgba(0,0,0,.35);
       --radius:18px;
     }
@@ -31,7 +25,6 @@
       color:var(--text);
       font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
     }
-
     .wrap{max-width:520px;margin:0 auto;padding:16px 14px 92px}
     .title{font-size:28px;font-weight:800;letter-spacing:.2px;margin:8px 2px 12px}
 
@@ -62,17 +55,13 @@
     }
     .btn:active{transform:translateY(1px)}
     .section{margin-top:14px}
-
     .sectionCard{
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       border:1px solid var(--stroke);
       border-radius: var(--radius);
       padding:14px;
     }
-    .sectionTitle{
-      font-size:18px;font-weight:800;margin:0 0 8px;color:rgba(229,231,235,.9)
-    }
-
+    .sectionTitle{font-size:18px;font-weight:800;margin:0 0 8px;color:rgba(229,231,235,.9)}
     .list{display:flex;flex-direction:column;gap:10px}
     .row{
       display:grid;
@@ -101,10 +90,7 @@
       background: rgba(255,255,255,.75);
       position:absolute;top:2px;left:2px;transition:.18s ease;
     }
-    .switch.on{
-      background: rgba(52,211,153,.20);
-      border-color: rgba(52,211,153,.35);
-    }
+    .switch.on{background: rgba(52,211,153,.20);border-color: rgba(52,211,153,.35);}
     .switch.on .knob{left:24px;background: rgba(52,211,153,.95)}
 
     .errorWrap{margin-top:10px}
@@ -117,8 +103,8 @@
       color: #ffb3b6;
       font-weight:700;
 
-      max-height: 22vh;      /* ✅ не вылезет */
-      overflow:auto;         /* ✅ скролл внутри */
+      max-height: 22vh;
+      overflow:auto;
       white-space: pre-wrap;
       word-break: break-word;
       overflow-wrap: anywhere;
@@ -157,21 +143,11 @@
       padding:10px;
     }
     .tab{
-      flex:1;
-      text-align:center;
-      padding:10px 8px;
-      border-radius:14px;
-      font-weight:800;
-      color: rgba(229,231,235,.7);
-      cursor:pointer;
-      user-select:none;
-      border:1px solid transparent;
+      flex:1;text-align:center;padding:10px 8px;border-radius:14px;
+      font-weight:800;color: rgba(229,231,235,.7);
+      cursor:pointer;user-select:none;border:1px solid transparent;
     }
-    .tab.active{
-      color: var(--text);
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.08);
-    }
+    .tab.active{color: var(--text);background: rgba(255,255,255,.06);border-color: rgba(255,255,255,.08);}
     .screen{display:none}
     .screen.active{display:block}
   </style>
@@ -181,7 +157,6 @@
   <div class="wrap">
     <div class="title">Кошелёк</div>
 
-    <!-- Кошелёк -->
     <div id="screenWallet" class="screen active">
       <div class="card">
         <div class="balanceTop">
@@ -231,19 +206,11 @@
       </div>
     </div>
 
-    <!-- Заглушки -->
-    <div id="screenBudget" class="screen">
-      <div class="card">Бюджет — пока заглушка.</div>
-    </div>
-    <div id="screenBills" class="screen">
-      <div class="card">Счета — пока заглушка.</div>
-    </div>
-    <div id="screenHistory" class="screen">
-      <div class="card">История — пока заглушка.</div>
-    </div>
+    <div id="screenBudget" class="screen"><div class="card">Бюджет — пока заглушка.</div></div>
+    <div id="screenBills" class="screen"><div class="card">Счета — пока заглушка.</div></div>
+    <div id="screenHistory" class="screen"><div class="card">История — пока заглушка.</div></div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <div class="tabsInner">
       <div class="tab active" data-tab="Wallet">Кошелёк</div>
@@ -254,7 +221,6 @@
   </div>
 
 <script>
-  // ✅ ТВОЙ API URL (GAS /exec)
   const API_URL = "https://script.google.com/macros/s/AKfycbzbZaigdYuDJ3MRQ8J9aYadxA-ElawUSUf7m_8gOlmddEOYGcpGuwlnVH1_gUIjdkc/exec";
 
   let currentMonth = "";
@@ -318,27 +284,55 @@
     return x.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " ₽";
   }
 
-  async function api(payload) {
+  function b64urlEncode(str) {
+    const b64 = btoa(unescape(encodeURIComponent(str)));
+    return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  }
+
+  // ✅ JSONP вызов (обходит CORS)
+  function api(payload) {
     payload = payload || {};
     payload.initData = initData;
 
-    // fallback на userIdUnsafe (на сервере тоже есть fallback)
     const info = tgInfo();
     payload.tgUserIdUnsafe = info.userIdUnsafe || "";
 
-    const r = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const cbName = "__wallet_cb_" + Date.now() + "_" + Math.random().toString(16).slice(2);
+    const p = b64urlEncode(JSON.stringify(payload));
+    const url = API_URL + "?cb=" + encodeURIComponent(cbName) + "&p=" + encodeURIComponent(p);
 
-    // GAS иногда отдаёт 200 даже при ошибке — поэтому парсим JSON и смотрим ok
-    const data = await r.json().catch(() => null);
-    if (!data || data.ok !== true) {
-      showErr(data || { where: "NETWORK", error: "Сервер вернул не JSON", details: { httpStatus: r.status } });
-      throw new Error(data && data.error ? data.error : "Ошибка запроса");
-    }
-    return data;
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        cleanup();
+        showErr({ where:"NETWORK", error:"Таймаут запроса (JSONP)", details:{ url } });
+        reject(new Error("timeout"));
+      }, 12000);
+
+      function cleanup() {
+        clearTimeout(timer);
+        try { delete window[cbName]; } catch(e) { window[cbName] = undefined; }
+        if (script && script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      window[cbName] = (data) => {
+        cleanup();
+        if (!data || data.ok !== true) {
+          showErr(data || { where:"SERVER", error:"Пустой ответ сервера" });
+          reject(new Error(data && data.error ? data.error : "server_error"));
+          return;
+        }
+        resolve(data);
+      };
+
+      const script = document.createElement("script");
+      script.src = url;
+      script.onerror = () => {
+        cleanup();
+        showErr({ where:"NETWORK", error:"Не удалось загрузить скрипт JSONP", details:{ url } });
+        reject(new Error("load_failed"));
+      };
+      document.head.appendChild(script);
+    });
   }
 
   function renderSwitch(item, table) {
@@ -443,7 +437,6 @@
     } catch(e){}
   }
 
-  // Tabs
   function setTab(name){
     document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
     document.getElementById("screenWallet").classList.toggle("active", name==="Wallet");
@@ -453,7 +446,6 @@
   }
   document.querySelectorAll(".tab").forEach(t => t.onclick = () => setTab(t.dataset.tab));
 
-  // Buttons
   document.getElementById("btnRefresh").onclick = () => loadState().catch(()=>{});
   document.getElementById("btnEditBalance").onclick = () => editBalance();
 
@@ -467,10 +459,13 @@
         initData = "";
       }
 
-      // init
       await api({ action: "init" });
       await loadState();
     } catch(e){
+      // Теперь покажем хоть что-то всегда
+      if (!document.getElementById("errorBox").textContent) {
+        showErr({ where:"INIT", error:"Не удалось инициализировать приложение", details:{ message:String(e && e.message ? e.message : e) } });
+      }
       document.getElementById("balanceSub").textContent = "Ошибка загрузки. Смотри детали ниже.";
     }
   })();
