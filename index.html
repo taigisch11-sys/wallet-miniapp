@@ -9,27 +9,31 @@
   <style>
     :root{
       --bg:#0b0f17;
-      --stroke:rgba(255,255,255,.08);
+      --card: rgba(17,24,39,.78);
+      --stroke:rgba(255,255,255,.10);
       --text:#e5e7eb;
       --muted:rgba(229,231,235,.65);
       --danger:#ff5a5f;
       --good:#34d399;
-      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --shadow: 0 10px 30px rgba(0,0,0,.28);
       --radius:18px;
+      --btn: rgba(255,255,255,.06);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      background: radial-gradient(1200px 700px at 50% -200px, rgba(99,102,241,.18), transparent 70%) , var(--bg);
+      background: var(--bg);
       color:var(--text);
       font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
     }
-    .wrap{max-width:520px;margin:0 auto;padding:16px 14px 92px}
-    .title{font-size:28px;font-weight:800;letter-spacing:.2px;margin:8px 2px 12px}
+
+    .wrap{max-width:520px;margin:0 auto;padding:16px 14px 168px} /* место под логи+табы */
+    .title{font-size:28px;font-weight:900;margin:8px 2px 12px}
 
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      background: var(--card);
       border:1px solid var(--stroke);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -38,30 +42,31 @@
 
     .balanceTop{display:flex;flex-direction:column;align-items:center;gap:8px}
     .balanceLabel{font-size:14px;color:var(--muted)}
-    .balanceSum{font-size:44px;font-weight:900;letter-spacing:.2px;line-height:1}
+    .balanceSum{font-size:44px;font-weight:950;line-height:1}
     .balanceSub{font-size:12px;color:var(--muted);text-align:center}
 
     .btnRow{display:flex;gap:12px;justify-content:center;margin-top:10px;flex-wrap:wrap}
     .btn{
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      background: var(--btn);
       border:1px solid var(--stroke);
       color:var(--text);
       padding:10px 14px;
       border-radius:14px;
       min-width:160px;
-      font-weight:650;
+      font-weight:800;
       cursor:pointer;
       user-select:none;
     }
     .btn:active{transform:translateY(1px)}
+
     .section{margin-top:14px}
     .sectionCard{
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--stroke);
+      background: rgba(15,23,42,.55);
+      border:1px solid rgba(255,255,255,.08);
       border-radius: var(--radius);
       padding:14px;
     }
-    .sectionTitle{font-size:18px;font-weight:800;margin:0 0 8px;color:rgba(229,231,235,.9)}
+    .sectionTitle{font-size:18px;font-weight:900;margin:0 0 8px;color:rgba(229,231,235,.92)}
     .list{display:flex;flex-direction:column;gap:10px}
     .row{
       display:grid;
@@ -71,13 +76,13 @@
       padding:10px 10px;
       border:1px solid rgba(255,255,255,.06);
       border-radius:14px;
-      background: rgba(15,23,42,.55);
+      background: rgba(17,24,39,.55);
     }
-    .name{font-weight:750}
+    .name{font-weight:850}
     .muted{color:var(--muted);font-size:12px;margin-top:2px}
-    .amt{font-weight:850; white-space:nowrap}
+    .amt{font-weight:900; white-space:nowrap}
     .amt.pos{color:var(--good)}
-    .amt.neg{color:rgba(229,231,235,.9)}
+    .amt.neg{color:rgba(229,231,235,.92)}
 
     .switch{
       width:48px;height:28px;border-radius:999px;
@@ -87,12 +92,13 @@
     }
     .switch .knob{
       width:22px;height:22px;border-radius:50%;
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.78);
       position:absolute;top:2px;left:2px;transition:.18s ease;
     }
-    .switch.on{background: rgba(52,211,153,.20);border-color: rgba(52,211,153,.35);}
+    .switch.on{background: rgba(52,211,153,.18);border-color: rgba(52,211,153,.30);}
     .switch.on .knob{left:24px;background: rgba(52,211,153,.95)}
 
+    /* Ошибка */
     .errorWrap{margin-top:10px}
     .errorBox{
       display:none;
@@ -101,55 +107,83 @@
       background: rgba(255,90,95,.10);
       padding:10px 10px;
       color: #ffb3b6;
-      font-weight:700;
-
-      max-height: 22vh;
+      font-weight:800;
+      max-height: 20vh;
       overflow:auto;
       white-space: pre-wrap;
       word-break: break-word;
-      overflow-wrap: anywhere;
+      overflow-wrap:anywhere;
       font-size:12px;
       line-height:1.25;
     }
-    .traceBox{
-      display:none;
-      margin-top:8px;
-      padding:8px 10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: rgba(229,231,235,.75);
-      font-size:11px;
 
-      max-height: 12vh;
-      overflow:auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-wrap: anywhere;
-    }
-
+    /* Tabs */
     .tabs{
       position:fixed;left:0;right:0;bottom:0;
       padding:10px 12px 14px;
-      background: linear-gradient(180deg, transparent, rgba(0,0,0,.55) 30%, rgba(0,0,0,.8));
+      background: rgba(0,0,0,.55);
       backdrop-filter: blur(12px);
     }
     .tabsInner{
       max-width:520px;margin:0 auto;
       display:flex;gap:10px;
-      background: rgba(17,24,39,.72);
+      background: rgba(17,24,39,.75);
       border:1px solid rgba(255,255,255,.08);
       border-radius: 18px;
       padding:10px;
     }
     .tab{
       flex:1;text-align:center;padding:10px 8px;border-radius:14px;
-      font-weight:800;color: rgba(229,231,235,.7);
+      font-weight:900;color: rgba(229,231,235,.72);
       cursor:pointer;user-select:none;border:1px solid transparent;
     }
     .tab.active{color: var(--text);background: rgba(255,255,255,.06);border-color: rgba(255,255,255,.08);}
     .screen{display:none}
     .screen.active{display:block}
+
+    /* Панель логов */
+    .logPanel{
+      position:fixed;left:0;right:0;bottom:76px;
+      padding:10px 12px;
+      pointer-events:none;
+    }
+    .logInner{
+      max-width:520px;margin:0 auto;
+      pointer-events:auto;
+      background: rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      overflow:hidden;
+    }
+    .logHead{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 12px;
+      font-weight:900;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .logBtn{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      user-select:none;
+    }
+    .logBody{
+      display:none;
+      max-height: 18vh;
+      overflow:auto;
+      padding:10px 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:11px;
+      line-height:1.25;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap:anywhere;
+      color: rgba(229,231,235,.85);
+    }
+    .logBody.show{display:block}
   </style>
 </head>
 
@@ -172,36 +206,17 @@
 
         <div class="errorWrap">
           <div id="errorBox" class="errorBox"></div>
-          <div id="traceBox" class="traceBox"></div>
         </div>
       </div>
 
-      <div class="section">
-        <div class="sectionCard">
-          <div class="sectionTitle">Источники дохода (месяц)</div>
-          <div id="listIncomes" class="list"></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sectionCard">
-          <div class="sectionTitle">Обязательные платежи (месяц)</div>
-          <div id="listPayments" class="list"></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sectionCard">
-          <div class="sectionTitle">Задолженности (кредиты)</div>
-          <div id="listDebts" class="list"></div>
-        </div>
-      </div>
-
+      <div class="section"><div class="sectionCard"><div class="sectionTitle">Источники дохода (месяц)</div><div id="listIncomes" class="list"></div></div></div>
+      <div class="section"><div class="sectionCard"><div class="sectionTitle">Обязательные платежи (месяц)</div><div id="listPayments" class="list"></div></div></div>
+      <div class="section"><div class="sectionCard"><div class="sectionTitle">Задолженности (кредиты)</div><div id="listDebts" class="list"></div></div></div>
       <div class="section">
         <div class="sectionCard">
           <div class="sectionTitle">Дополнительные расходы (авто)</div>
           <div class="muted">Разница между корректировкой и расчётом. Если баланс не корректировали — будет 0</div>
-          <div style="margin-top:10px;font-size:26px;font-weight:900" id="additional">—</div>
+          <div style="margin-top:10px;font-size:26px;font-weight:950" id="additional">—</div>
         </div>
       </div>
     </div>
@@ -211,6 +226,18 @@
     <div id="screenHistory" class="screen"><div class="card">История — пока заглушка.</div></div>
   </div>
 
+  <!-- Логи -->
+  <div class="logPanel">
+    <div class="logInner">
+      <div class="logHead">
+        <div>Логи</div>
+        <div id="btnToggleLogs" class="logBtn">Показать</div>
+      </div>
+      <div id="logBody" class="logBody"></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
   <div class="tabs">
     <div class="tabsInner">
       <div class="tab active" data-tab="Wallet">Кошелёк</div>
@@ -225,39 +252,26 @@
 
   let currentMonth = "";
   let initData = "";
+  let logsOpen = false;
 
-  function tgInfo() {
-    const hasTG = !!(window.Telegram && Telegram.WebApp);
-    const w = hasTG ? Telegram.WebApp : null;
+  function log(msg, obj) {
+    const el = document.getElementById("logBody");
+    const ts = new Date().toLocaleTimeString("ru-RU");
+    const line = obj ? `[${ts}] ${msg} ${safeJson(obj)}` : `[${ts}] ${msg}`;
+    el.textContent = line + "\n" + el.textContent;
+  }
 
-    let uid = "";
-    try {
-      uid = w && w.initDataUnsafe && w.initDataUnsafe.user && w.initDataUnsafe.user.id
-        ? String(w.initDataUnsafe.user.id)
-        : "";
-    } catch(e){}
-
-    return {
-      hasTelegramWebApp: hasTG,
-      platform: w && w.platform ? String(w.platform) : "",
-      version: w && w.version ? String(w.version) : "",
-      initDataLen: w && typeof w.initData === "string" ? w.initData.length : 0,
-      userIdUnsafe: uid
-    };
+  function safeJson(obj) {
+    try { return JSON.stringify(obj); } catch(e) { return String(obj); }
   }
 
   function showErr(payload) {
     const errorBox = document.getElementById("errorBox");
-    const traceBox = document.getElementById("traceBox");
-
     if (!payload) {
       errorBox.style.display = "none";
       errorBox.textContent = "";
-      traceBox.style.display = "none";
-      traceBox.textContent = "";
       return;
     }
-
     let text = "";
     if (typeof payload === "object") {
       const where = payload.where ? `Где: ${payload.where}\n` : "";
@@ -269,13 +283,42 @@
     } else {
       text = String(payload);
     }
-
     errorBox.style.display = "block";
     errorBox.textContent = text;
+  }
 
-    const info = tgInfo();
-    traceBox.style.display = "block";
-    traceBox.textContent = "TG debug: " + JSON.stringify(info);
+  function applyTelegramTheme() {
+    try {
+      if (!(window.Telegram && Telegram.WebApp)) return;
+      const tp = Telegram.WebApp.themeParams || {};
+      // максимально “телеграмно”
+      if (tp.bg_color) document.documentElement.style.setProperty("--bg", tp.bg_color);
+      if (tp.text_color) document.documentElement.style.setProperty("--text", tp.text_color);
+      if (tp.hint_color) document.documentElement.style.setProperty("--muted", tp.hint_color);
+      // карточки делаем “контейнерными”
+      document.documentElement.style.setProperty("--card", "rgba(17,24,39,.72)");
+      log("Тема Telegram применена", tp);
+    } catch (e) {
+      log("applyTelegramTheme error", { message: String(e) });
+    }
+  }
+
+  function tgInfo() {
+    const hasTG = !!(window.Telegram && Telegram.WebApp);
+    const w = hasTG ? Telegram.WebApp : null;
+    let uid = "";
+    try {
+      uid = w && w.initDataUnsafe && w.initDataUnsafe.user && w.initDataUnsafe.user.id
+        ? String(w.initDataUnsafe.user.id)
+        : "";
+    } catch(e){}
+    return {
+      hasTelegramWebApp: hasTG,
+      platform: w && w.platform ? String(w.platform) : "",
+      version: w && w.version ? String(w.version) : "",
+      initDataLen: w && typeof w.initData === "string" ? w.initData.length : 0,
+      userIdUnsafe: uid
+    };
   }
 
   function rub(n) {
@@ -289,11 +332,10 @@
     return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
   }
 
-  // ✅ JSONP вызов (обходит CORS)
+  // JSONP (обходит CORS)
   function api(payload) {
     payload = payload || {};
     payload.initData = initData;
-
     const info = tgInfo();
     payload.tgUserIdUnsafe = info.userIdUnsafe || "";
 
@@ -301,10 +343,14 @@
     const p = b64urlEncode(JSON.stringify(payload));
     const url = API_URL + "?cb=" + encodeURIComponent(cbName) + "&p=" + encodeURIComponent(p);
 
+    log("API call", { action: payload.action, urlShort: API_URL, initDataLen: (initData||"").length, userId: payload.tgUserIdUnsafe });
+
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         cleanup();
-        showErr({ where:"NETWORK", error:"Таймаут запроса (JSONP)", details:{ url } });
+        const err = { where:"NETWORK", error:"Таймаут JSONP", details:{ action: payload.action } };
+        showErr(err);
+        log("API timeout", err);
         reject(new Error("timeout"));
       }, 12000);
 
@@ -316,6 +362,7 @@
 
       window[cbName] = (data) => {
         cleanup();
+        log("API ответ", data);
         if (!data || data.ok !== true) {
           showErr(data || { where:"SERVER", error:"Пустой ответ сервера" });
           reject(new Error(data && data.error ? data.error : "server_error"));
@@ -328,7 +375,9 @@
       script.src = url;
       script.onerror = () => {
         cleanup();
-        showErr({ where:"NETWORK", error:"Не удалось загрузить скрипт JSONP", details:{ url } });
+        const err = { where:"NETWORK", error:"Не удалось загрузить JSONP", details:{ action: payload.action } };
+        showErr(err);
+        log("API load failed", err);
         reject(new Error("load_failed"));
       };
       document.head.appendChild(script);
@@ -345,7 +394,7 @@
         showErr(null);
         await api({ action: "toggleDone", table, id: item.id, done: !sw.classList.contains("on") });
         await loadState();
-      } catch(e){}
+      } catch(e) {}
     };
     return sw;
   }
@@ -353,23 +402,18 @@
   function renderList(containerId, items, table) {
     const box = document.getElementById(containerId);
     box.innerHTML = "";
-
     if (!items || items.length === 0) {
       box.innerHTML = '<div class="muted" style="padding:8px">Пусто</div>';
       return;
     }
-
     items.forEach(it => {
       const row = document.createElement("div");
       row.className = "row";
-
       const left = document.createElement("div");
       left.innerHTML = `<div class="name">${it.name || ""}</div><div class="muted">${rub(it.amount)}</div>`;
-
       const amt = document.createElement("div");
       amt.className = "amt " + (table === "Incomes" ? "pos" : "neg");
       amt.textContent = rub(it.amount);
-
       row.appendChild(left);
       row.appendChild(renderSwitch(it, table));
       row.appendChild(amt);
@@ -380,23 +424,18 @@
   function renderDebts(items) {
     const box = document.getElementById("listDebts");
     box.innerHTML = "";
-
     if (!items || items.length === 0) {
       box.innerHTML = '<div class="muted" style="padding:8px">Пусто</div>';
       return;
     }
-
     items.forEach(it => {
       const row = document.createElement("div");
       row.className = "row";
-
       const left = document.createElement("div");
       left.innerHTML = `<div class="name">${it.name || ""}</div><div class="muted">Долг</div>`;
-
       const amt = document.createElement("div");
       amt.className = "amt neg";
       amt.textContent = rub(it.amount);
-
       row.appendChild(left);
       row.appendChild(amt);
       box.appendChild(row);
@@ -405,8 +444,8 @@
 
   async function loadState() {
     showErr(null);
+    log("loadState()");
     const r = await api({ action: "getState", month: currentMonth || "" });
-
     currentMonth = r.month;
     const s = r.state;
 
@@ -415,7 +454,6 @@
       `Расчёт: ${rub(s.calcBalance)} · Старт: ${rub(s.startBalance)} · Долги: ${rub(s.creditDebt)}`;
 
     document.getElementById("additional").textContent = rub(s.additionalExpenses);
-
     renderList("listIncomes", s.incomes, "Incomes");
     renderList("listPayments", s.payments, "Payments");
     renderDebts(s.debts);
@@ -424,13 +462,12 @@
   async function editBalance() {
     const v = prompt("Введи текущий баланс (число). Например: 17294.20", "");
     if (v === null) return;
-
     const n = Number(String(v).replace(",", "."));
     if (isNaN(n)) {
-      showErr({ where: "VALIDATION", error: "Введено не число" });
+      const err = { where:"VALIDATION", error:"Введено не число" };
+      showErr(err); log("editBalance validation", err);
       return;
     }
-
     try {
       await api({ action: "setEditedBalance", value: n });
       await loadState();
@@ -449,23 +486,30 @@
   document.getElementById("btnRefresh").onclick = () => loadState().catch(()=>{});
   document.getElementById("btnEditBalance").onclick = () => editBalance();
 
+  document.getElementById("btnToggleLogs").onclick = () => {
+    logsOpen = !logsOpen;
+    document.getElementById("logBody").classList.toggle("show", logsOpen);
+    document.getElementById("btnToggleLogs").textContent = logsOpen ? "Скрыть" : "Показать";
+  };
+
   (async function init(){
-    try{
+    log("INIT start");
+    try {
       if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
         initData = Telegram.WebApp.initData || "";
-      } else {
-        initData = "";
       }
+      log("TG info", tgInfo());
+      applyTelegramTheme();
 
       await api({ action: "init" });
       await loadState();
-    } catch(e){
-      // Теперь покажем хоть что-то всегда
-      if (!document.getElementById("errorBox").textContent) {
-        showErr({ where:"INIT", error:"Не удалось инициализировать приложение", details:{ message:String(e && e.message ? e.message : e) } });
-      }
+      log("INIT done");
+    } catch(e) {
+      const err = { where:"INIT", error:"Ошибка загрузки", details:{ message:String(e && e.message ? e.message : e) } };
+      showErr(err);
+      log("INIT fail", err);
       document.getElementById("balanceSub").textContent = "Ошибка загрузки. Смотри детали ниже.";
     }
   })();
